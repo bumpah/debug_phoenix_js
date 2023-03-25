@@ -2,7 +2,7 @@
 ![demonstrate-phoenix-js-issue](https://user-images.githubusercontent.com/17970806/227719413-a916bf80-7932-4285-925b-9cc959ae8734.gif)
 
 Debug repository to experiment on difference between `push_patch` and `<.link patch>` behaviour.  
-There is test setup with Wallaby for reproducing this issue that occurs on Javascript side of Phoenix. You can execute Wallaby-tests with `mix test`, just make sure you have `chromedriver` installed.
+There is test setup with Wallaby for reproducing this issue that occurs on Javascript side of Phoenix. You can execute Wallaby-tests with `mix test`, just make sure you have `chromedriver` installed. You are expected to see 2 failing tests, which are expected to pass instead.
 
 To start your Phoenix server:
 

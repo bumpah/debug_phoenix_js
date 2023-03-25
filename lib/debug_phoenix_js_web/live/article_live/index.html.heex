@@ -1,0 +1,57 @@
+<blockquote class="p-4 my-4 border-l-4 border-gray-300 bg-gray-50 dark:border-gray-500 dark:bg-gray-800 text-white">
+  Description:<br /> I would expect <b>phx:page-loading-stop</b>
+  handler to execute in similar manner
+  wether query parameters are updated with push_patch or with .link patch.<br /><br />
+  On example case, content for <b>span id="current-query-params"</b>
+  is lost when text is typed to search field or search field is cleared.
+</blockquote>
+<p>Url from app.js: <i id="current-query-params"></i></p>
+<hr class="pb-4" />
+<.form for={@form} phx-change="validate" onkeydown="return event.key != 'Enter';">
+  <div class="grid grid-cols-2 gap-2">
+    <div>
+      <label for="text-search">push_patch(socket, to: ~p"/?title=#{title}")</label>
+      <.input id="text-search" type="text" field={@form[:title]} />
+    </div>
+    <div>
+      <label>
+        .link patch={~p"/?title=my+title"}
+      </label>
+      <.link patch={~p"/?title=my+title"}>
+        <.button>
+          update query parameters
+        </.button>
+      </.link>
+    </div>
+  </div>
+</.form>
+<.header>
+  Listing Articles
+  <:actions>
+    <.link patch={~p"/articles/new"}>
+      <.button>New Article</.button>
+    </.link>
+  </:actions>
+</.header>
+<.table id="articles" rows={@articles}>
+  <:col :let={%{title: title}} label="Title"><%= title %></:col>
+  <:action :let={%{id: id}}>
+    <.link
+      phx-click={JS.push("delete", value: %{id: id}) |> hide("##{id}")}
+      data-confirm="Are you sure?"
+    >
+      Delete
+    </.link>
+  </:action>
+</.table>
+
+<.modal :if={@live_action in [:new, :edit]} id="article-modal" show on_cancel={JS.patch(~p"/")}>
+  <.live_component
+    module={DebugPhoenixJsWeb.ArticleLive.FormComponent}
+    id={@article.id || :new}
+    title={@page_title}
+    action={@live_action}
+    article={@article}
+    patch={~p"/"}
+  />
+</.modal>
